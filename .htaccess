@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# Permitir acceso a archivos estáticos
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Redirigir todo lo demás al index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Configuración de seguridad básica
+<Files "*.php">
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Ocultar información del servidor
+# ServerTokens y ServerSignature deben configurarse en apache2.conf, no en .htaccess
+
+# Prevenir acceso a archivos sensibles
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

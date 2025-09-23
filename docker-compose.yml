@@ -1,0 +1,15 @@
+services:
+  ctf-web:
+    build: .
+    container_name: ctf-lab
+    ports:
+      - "0.0.0.0:8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ctf.rule=Host(`ctf.localhost`)"
+      - "traefik.http.services.ctf.loadbalancer.server.port=80"
